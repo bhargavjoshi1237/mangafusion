@@ -31,3 +31,9 @@ body {
     text-wrap: balance;
   }
 }
+
+.xd {
+  background: rgba(16, 16, 16, 0.918);
+  background-size: cover;
+  background-blend-mode: darken;
+  }

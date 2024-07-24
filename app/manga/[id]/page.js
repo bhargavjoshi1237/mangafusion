@@ -1,7 +1,6 @@
 import Carsoul from "@/app/ui_component/carsoul_bg";
 import TopPublishing from "@/app/ui_component/top_publishing";
 import GridX from "@/app/ui_component/grid";
-import { createClient } from "@/app/supabase";
 import Navbar from "@/app/ui_component/navbar";
 export default async function Home({ params }) {
     async function fetchExternalData() {
@@ -19,20 +18,11 @@ export default async function Home({ params }) {
   
   return (
     <>
-    <div className="bg-[#161616]">
-
-    <Navbar />
+     {/* <p className="text-white">{JSON.stringify(datax)}</p> */}
+   <Navbar />
    <Carsoul />
    <TopPublishing />
    <GridX />
-   <br />
-   <GridX />
-
-   <GridX />
-
-    </div>
-  
-
       </>
   );
 }
