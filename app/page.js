@@ -1,38 +1,25 @@
-import Carsoul from "@/app/ui_component/carsoul_bg";
-import TopPublishing from "@/app/ui_component/top_publishing";
-import GridX from "@/app/ui_component/grid";
-import { createClient } from "@/app/supabase";
-import Navbar from "@/app/ui_component/navbar";
-export default async function Home({ params }) {
-    async function fetchExternalData() {
-        // const supabase = createClient();
-        // const response = await fetch(`https://api.jikan.moe/v4/manga/${params.id}/full`);
-        // const datax = await response.json();
-        // const { data: supabaseData, error } = await supabase
-        // .from('w')
-        // .select();
-        // return {datax,supabaseData};
+import { createClient } from "./supabase";
+import { Homecontainer } from "./ui_component/homecontainer";
+export default async function Home() {
+  async function fetchExternalData() {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('all_cash')
+      .select('*')
+      .order('name', { ascending: true })
+    if (error) {
+      console.error('Error fetching data:', error);
+      return { data: [] }; 
     }
- 
 
-  // const {datax, supabaseData } = await fetchExternalData();
+    return { data };
+  }
+
+  const { data } = await fetchExternalData();
   
   return (
     <>
-    <div className="bg-[#161616]">
-
-    <Navbar />
-   <Carsoul />
-   <TopPublishing />
-   <GridX />
-   <br />
-   <GridX />
-
-   <GridX />
-
-    </div>
-  
-
-      </>
+    <Homecontainer data={data} />
+    </>
   );
 }

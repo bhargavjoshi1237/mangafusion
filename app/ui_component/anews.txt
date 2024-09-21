@@ -1,0 +1,129 @@
+
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
+import { createClient } from "../supabase";
+
+export default async function NewsComponent () {
+    async function fetchExternalData() {
+        const supabase = createClient();
+        const { data: newsData, error } = await supabase
+            .from('all_cash')
+            .select('json')
+            .eq('name', 'news')
+        if (error) {
+          console.error('Error fetching data:', error);
+          return { data: [] }; 
+        }
+    
+        return { newsData };
+      }
+
+      const { newsData } = await fetchExternalData();
+    
+    return (
+        <>
+            <div className='ml-auto mr-auto flex text-2xl '>
+                <p className='float-left fon'>Trending NEWS</p>
+            </div>
+
+            <Carousel plugins={[
+                
+            ]} className=" ml-auto mr-auto mt-7 mb-10 sm:hidden">
+                <CarouselContent className="flex justify-between">
+                    {Array.isArray(newsData) && newsData.reduce((pairs, newsItem, index) => {
+                        if (index % 1 === 0) {
+                            pairs.push([newsItem]);
+                        } else {
+                            pairs[pairs.length - 1].push(newsItem);
+                        }
+                        return pairs;
+                    }, []).map((pair, index) => (
+                        <CarouselItem key={index} className="flex w-full justify-between">
+                            {pair.map((newsItem, pairIndex) => (
+                                <Dialog key={newsItem.id}>
+                                    <DialogTrigger>
+                                        <div className='rounded-xl h-[230px] flex flex-col items-center justify-center' style={{ width: '100%', backgroundImage: `url("${newsItem.thumbnail}")` }}>
+                                            <p className='fon text-sm text-center ml-3 mr-3 w-[90%]'>{(newsItem?.title)?.slice(0, 50)}</p>
+                                            <p className='fon text-sm mt-2'>{newsItem.uploadedAt}</p>
+                                        </div>
+                                    </DialogTrigger>
+                                    <DialogContent className="bg-[#161616] rounded-md">
+                                        <DialogHeader>
+                                            <DialogTitle className="fon text-sm">{newsItem.title}</DialogTitle>
+                                            <p className='fon text-xs mb-2'>{newsItem.uploadedAt}</p>
+                                            <br />
+                                            <img className='rounded-xl max-h-[500px] w-[500px]' src={newsItem.thumbnail} alt="" />
+                                            <br />
+                                            <p className='fon' id='intro' style={{ fontSize: "15px" }}>{newsData[pairIndex + index * 3]?.intro}</p>
+                                            <p className='fon' id='DESCRIPTION' style={{ fontSize: "10px" }}>
+                                                {(newsData[pairIndex + index * 3]?.description)?.slice(0, 500)}
+                                            </p>
+                                            <br />
+                                            <button className='btn btn-outline w-1/4' onClick={() => window.open(newsItem.url, '_blank')} rel="noreferrer">Source</button>
+                                        </DialogHeader>
+                                    </DialogContent>
+                                </Dialog>
+                            ))}
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+            </Carousel>
+            <Carousel className="hidden md:block ml-auto mr-auto mt-7 mb-10">
+                <CarouselContent className="flex justify-between ">
+                    {Array.isArray(newsData) && newsData.reduce((pairs, newsItem, index) => {
+                        if (index % 4 === 0) {
+                            pairs.push([newsItem]);
+                        } else {
+                            pairs[pairs.length - 1].push(newsItem);
+                        }
+                        return pairs;
+                    }, []).map((pair, index) => (
+                        <CarouselItem key={index} className="flex w-full justify-between">
+                            {pair.map((newsItem, pairIndex) => (
+                                <Dialog key={newsItem.id}>
+                                    <DialogTrigger>
+                                        <div className='rounded-xl h-[230px] flex flex-col items-center justify-center' style={{ width: '100%', backgroundImage: `url("${newsItem.thumbnail}")` }}>
+                                            <p className='fon text-sm text-center ml-3 mr-3 w-[90%]'>{(newsItem?.title)?.slice(0, 50)}</p>
+                                            <p className='fon text-sm mt-2'>{newsItem.uploadedAt}</p>
+                                        </div>
+                                    </DialogTrigger>
+                                    <DialogContent className="bg-[#161616]">
+                                        <DialogHeader>
+                                            <DialogTitle className="fon text-sm">{newsItem.title}</DialogTitle>
+                                            <p className='fon text-xs mb-2'>{newsItem.uploadedAt}</p>
+                                            <br />
+                                            <img className='rounded-xl max-h-[500px] w-[500px]' src={newsItem.thumbnail} alt="" />
+                                            <br />
+                                            <p className='fon' id='intro' style={{ fontSize: "15px" }}>{newsData[pairIndex + index * 3]?.intro}</p>
+                                            <p className='fon' id='DESCRIPTION' style={{ fontSize: "10px" }}>
+                                                {(newsData[pairIndex + index * 3]?.description)?.slice(0, 500)}
+                                            </p>
+                                            <br />
+                                            <button className='btn btn-outline w-1/4' onClick={() => window.open(newsItem.url, '_blank')} rel="noreferrer">Source</button>
+                                        </DialogHeader>
+                                    </DialogContent>
+                                </Dialog>
+                            ))}
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+            </Carousel>
+        </>
+    );
+};
+
+

@@ -1,22 +1,16 @@
-// pages/api/fetch-html.js
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-export default async function handler(req, res) {
-  const { query: { url } } = req;
-
+const fetchBookswagoSearchnData = async (searchcrit1) => {
   try {
-    // Fetch HTML content from the provided URL
-    const response = await axios.get(url);
+    const response = await axios.get(`https://www.bookswagon.com/search-books/${searchcrit1}`);
     const html = response.data;
-
-    // Extract data from HTML using Cheerio
     const $ = cheerio.load(html);
 
-    // Extracting the label content
     const label = $('#ctl00_phBody_ProductDetail_lblourPrice').text().trim();
+    const imgSrc = $('#ctl00_phBody_ProductDetail_imgProduct').attr('src');
+    const title = $('#ctl00_phBody_ProductDetail_lblTitle').text().trim();
 
-    // Extracting book details
     const bookDetailDiv = $('#bookdetail');
     const details = {};
     bookDetailDiv.find('li').each((i, elem) => {
@@ -25,13 +19,9 @@ export default async function handler(req, res) {
       details[key] = value;
     });
 
-    // Extracting release label
     const release = $('#ctl00_phBody_ProductDetail_lblRelease').text().replace(` | Released: `, '').trim();
-
-    // Extracting paragraphs
     const aboutBookText = $('#aboutbook').text().replace('About the Book', '').trim();
 
-    // Extracting author details
     const authorDetailDiv = $('.authordetailtext');
     const authors = [];
     authorDetailDiv.find('label').each((i, elem) => {
@@ -49,11 +39,9 @@ export default async function handler(req, res) {
       }
     });
 
-    // Checking availability
     const availability = $('#ctl00_phBody_ProductDetail_lblAvailable').text().trim();
     const isAvailable = availability !== 'Out of Stock';
 
-    // Extracting bestseller books
     const bestsellerBooksArray = [];
     $('#bestsellerdetail .card.cardtest').each((i, elem) => {
       const book = {};
@@ -65,21 +53,21 @@ export default async function handler(req, res) {
       bestsellerBooksArray.push(book);
     });
 
-    // Construct JSON response
-    const jsonData = {
+    return {
       labelContent: label,
+      imgSrc: imgSrc,
+      title: title,
       bookDetails: details,
       releaseLabel: release,
-      authorDetails: authors,
       paragraphs: aboutBookText,
+      authorDetails: authors,
       isOutOfStock: !isAvailable,
-      bestsellerBooks: bestsellerBooksArray,
+      bestsellerBooks: bestsellerBooksArray
     };
-
-    // Return JSON response
-    res.status(200).json(jsonData);
   } catch (error) {
-    console.error('Error fetching URL:', error);
-    res.status(500).json({ error: 'Failed to fetch URL' });
+    console.error('Error fetching and parsing HTML:', error);
+    return { error: 'Failed to fetch data from Bookswagon' };
   }
-}
+};
+
+export default fetchBookswagoSearchnData;

@@ -1,12 +1,59 @@
+'use client'
+import * as React from "react";
 import PubDiv from "./publishing_div";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
+export default function TopPublishing({data}) {
+  const [trendingData, setTrendingData] = React.useState([]);
+  React.useEffect(() => {
 
-export default function TopPublishing() {
+        setTrendingData(data.json);
+       
+  }, []);
+
     return (
 <>
     <div className="w-[90%] mt-4 ml-auto mr-auto rounded-xl h-[235px] overflow-hidden flex " >
-       <PubDiv imagex={'https://cdn.myanimelist.net/images/manga/3/235363l.jpg'}/>
-       <PubDiv imagex={'https://mangadex.org/covers/aa6c76f7-5f5f-46b6-a800-911145f81b9b/426242c4-b281-4f19-bb79-c4e15ab6bb24.jpg'}/>
-       <PubDiv imagex={'https://mangadex.org/covers/6b958848-c885-4735-9201-12ee77abcb3c/53a05c31-1043-4f74-b1e4-8f1963f04466.jpg'}/>
+   
+ <Carousel plugins={[
+    Autoplay({
+      delay: 5000,
+    }),
+  ]} className="w-full">
+  <CarouselContent>
+    {/* Group entries into sets of 3 */}
+    {Array.from({ length: Math.ceil(trendingData.length / 3) }).map((_, slideIndex) => (
+      <CarouselItem key={slideIndex}>
+        <div className="flex">
+          {/* Hide this on mobile view */}
+          <div className="w-full hidden md:flex">
+            {trendingData.slice(slideIndex * 3, slideIndex * 3 + 3).map((entry, entryIndex) => (
+              <PubDiv key={entryIndex} data={entry} />
+            ))}
+          </div>
+          {/* Hide this on desktop view */}
+          <div className="w-full block md:hidden -ml-4">
+            {trendingData.slice(slideIndex * 3, slideIndex * 3 + 1).map((entry, entryIndex) => (
+              <div key={entryIndex} className="w-full">
+                <PubDiv data={entry} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+
+
 
 
 </div>

@@ -1,30 +1,28 @@
 import Man from "./manga";
 
-export default function GridX({ data,title }) {
-   
-
+export default function GridY({ data, title, kitsu }) {
     return (
         <>
             <div className="w-[85%] mt-6 ml-auto mr-auto h-fit mb-1">
                 <p className="text-xl text-white fon">
                     {title}
                 </p>
-                <div className=" mt-10 items-center justify-center h-fit mb-1 hidden sm:flex -ml-3">
+                <div className="mt-10 items-center justify-center h-fit mb-1 hidden sm:flex -ml-3">
                     {Array.isArray(data) && data.length > 0 ? (
                         data.slice(0, 9).map((item, index) => {
-                            
                             return (
-                                <div  key={index} className="mb-8">
-                                    <a href={`/manga/${item.mangadex?.data[0]?.attributes?.links?.mal}`}><Man
-                                key={index}
-                                  name={item.main?.attributes.titles.en_us || item.main?.attributes.titles.en}
-                                imagex={item.main?.attributes.posterImage.medium}
-                            /></a>
-                                </div>
-                            
+                               
+                                <div key={index} className="mb-8" id="if kitsu is true">
+                                <a href={`/manga/${item.mangadex?.data[0]?.attributes?.links?.mal}`}>
+                                  <Man
+                                    key={index}
+                                    name={item?.main?.attributes?.titles?.en_us || item?.attributes?.titles?.en || item?.attributes?.titles?.en_jp}
+                                    imagex={item?.main?.attributes?.posterImage.original}
+                                  />
+                                </a>
+                              </div>
                             );
-                        }
-                     )
+                        })
                     ) : (
                         <>
                             <Man name="No data available" imagex="https://animealley.online/404.jpg" />
@@ -39,20 +37,21 @@ export default function GridX({ data,title }) {
                         </>
                     )}
                 </div>
-                <div className="sm:hidden   mt-10 items-center justify-center h-fit mb-1 grid-cols-2 grid  -ml-3">
+                <div className="sm:hidden mt-10 items-center justify-center h-fit mb-1 grid-cols-2 grid -ml-3">
                     {Array.isArray(data) && data.length > 0 ? (
                         data.slice(0, 8).map((item, index) => {
-                            
                             return (
-                                <div  key={index} className="mb-8"><a href={`/manga/${item.mangadex?.data[0]?.attributes?.links?.mal}`}><Man
-                                key={index}
-                                  name={item.main?.attributes.titles.en_us || item.main?.attributes.titles.en}
-                                imagex={item.main?.attributes.posterImage.original}
-                            /></a></div>
-                            
+                                <div key={index} className="mb-8">
+                                    <a href={`/manga/${item.mangadex?.data[0]?.attributes?.links?.mal}`}> 
+                                    <Man
+                                    key={index}
+                                    name={item?.main?.attributes?.titles?.en_us || item?.attributes?.titles?.en || item?.attributes?.titles?.en_jp}
+                                    imagex={item?.main?.attributes?.posterImage.original}
+                                  />
+                                    </a>
+                                </div>
                             );
-                        }
-                     )
+                        })
                     ) : (
                         <>
                             <Man name="No data available" imagex="https://animealley.online/404.jpg" />
