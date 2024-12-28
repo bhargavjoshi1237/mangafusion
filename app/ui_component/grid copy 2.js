@@ -32,17 +32,24 @@ export default function GridXXY({ data, title, kitsu }) {
                             );
                         })
                     ) : (
+                        
+                        data?.length === 0 ? (
+                            <div className="border border-white rounded-md p-4 flex items-center justify-center w-full">
+                                <p className="text-white text-center">No manga available for this stage</p>
+                            </div>
+                        ) : (
                         <>
-                            <Man name="No data available" imagex="https://animealley.online/404.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/jx3yqk.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/4kKKpy.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/w7p0lr.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/w7pN4L.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/4kKEvx.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/Krgg7N.jpg" />
-                            <Man imagex="https://meo2.comick.pictures/YgER6O.png" />
-                            <Man imagex="https://meo2.comick.pictures/7yKpae.jpg" />
+                            <Man name="No data available" imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
+                            <Man imagex="https://raw.githubusercontent.com/bhargavjoshi1237/Anime-Alley/refs/heads/bhargavjoshi1237-patch-4/404.jpg" />
                         </>
+                        )
                     )}
                 </div>
                 <div className="sm:hidden mt-10 items-center justify-center h-fit mb-1 grid-cols-2 grid -ml-3">
@@ -66,6 +73,12 @@ export default function GridXXY({ data, title, kitsu }) {
                             );
                         })
                     ) : (
+
+                        data?.length === 0 ? (
+                            <div className="border border-white rounded-md  flex items-center justify-center w-full " >
+                                <p className="text-xl text-white fon">No manga available for this stage</p>
+                            </div>
+                            ) : (
                         <>
                             <Man name="No data available" imagex="https://animealley.online/404.jpg" />
                             <Man imagex="https://meo2.comick.pictures/jx3yqk.jpg" />
@@ -77,6 +90,7 @@ export default function GridXXY({ data, title, kitsu }) {
                             <Man imagex="https://meo2.comick.pictures/YgER6O.png" />
                             <Man imagex="https://meo2.comick.pictures/7yKpae.jpg" />
                         </>
+                            )
                     )}
                 </div>
             </div>

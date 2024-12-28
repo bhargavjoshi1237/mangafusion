@@ -3,7 +3,7 @@ import Navbar from '@/app/ui_component/navbar';
 import { Separator } from '@/components/ui/separator';
 import NewsComponent from '@/app/ui_component/news';
 import Footer from '@/app/ui_component/footer';
-import Charx from '@/app/ui_component/characters';
+
 
 export default async function Home({ params }) {
     async function fetchExternalData() {

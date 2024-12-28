@@ -8,12 +8,14 @@ export default function Man({ imagex, name = "No name available",}) {
     <img
       className="h-[235px] w-[163px] rounded-sm"
       src={imagex }
+      onerror="console.log('cunt')" 
     //   onError={event => {
     //     event.target.src = "https://cdn.myanimelist.net/images/anime/1006/143302l.jpg"
     //     event.onerror = null
     //   }}
     />
-    <p className="w-[163px] font text-xs mt-1" align="center">
+    {/*  */}
+    <p className="w-[163px] font text-xs fon text-white mt-2" align="center">
       {truncatedName}
     </p>
   </div>

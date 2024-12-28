@@ -5,13 +5,10 @@ async function fetchBookswagonData(url) {
   try {
     // Fetch search results
     const searchResponse = await axios.get(`https://www.bookswagon.com/search-books/${url}`);
-    const searchHtml = searchResponse.data;
-    const $search = cheerio.load(searchHtml);
+    const $search = cheerio.load(searchResponse.data);
     
     // Extract first product URL from the search results
-    const productSummaryDiv = $search('.product-summary');
-    const firstAnchorTag = productSummaryDiv.find('a').first();
-    const firstAnchorUrl = firstAnchorTag.attr('href');
+    const firstAnchorUrl = $search('.product-summary a').first().attr('href');
 
     // Validate the firstAnchorUrl
     if (!firstAnchorUrl) {
@@ -25,21 +22,16 @@ async function fetchBookswagonData(url) {
 
     // Fetch product details page
     const productResponse = await axios.get(fullProductUrl);
-    const productHtml = productResponse.data;
-    const $product = cheerio.load(productHtml);
+    const $product = cheerio.load(productResponse.data);
     
-    // Extracting the label content (price)
+    // Extracting the label content (price), image source, and title
     const label = $product('#ctl00_phBody_ProductDetail_lblourPrice').text().trim();
     const imgSrc = $product('#ctl00_phBody_ProductDetail_imgProduct').attr('src');
     const title = $product('#ctl00_phBody_ProductDetail_lblTitle').text().trim();
 
-    // Log values for debugging
-    console.log('Price:', label, 'Image Source:', imgSrc, 'Title:', title);
-    
     // Extracting book details
-    const bookDetailDiv = $product('#bookdetail');
     const details = {};
-    bookDetailDiv.find('li').each((i, elem) => {
+    $product('#bookdetail li').each((i, elem) => {
       const key = $product(elem).find('span.font-weight-bold').text().replace(':', '').trim();
       const value = $product(elem).contents().not($product(elem).find('span.font-weight-bold')).text().trim();
       details[key] = value;
@@ -53,8 +45,7 @@ async function fetchBookswagonData(url) {
 
     // Extracting author details
     const authors = [];
-    const authorDetailDiv = $product('.authordetailtext');
-    authorDetailDiv.find('label').each((i, elem) => {
+    $product('.authordetailtext label').each((i, elem) => {
       const text = $product(elem).text().trim().replace('By: ', '');
       const labelId = $product(elem).attr('id');
       if (text) {
@@ -76,13 +67,13 @@ async function fetchBookswagonData(url) {
     // Extracting bestseller books
     const bestsellerBooksArray = [];
     $product('#bestsellerdetail .card.cardtest').each((i, elem) => {
-      const book = {};
       const anchor = $product(elem).find('a');
       const img = $product(elem).find('img');
-      book.name = anchor.attr('title');
-      book.image = img.attr('src');
-      book.link = anchor.attr('href');
-      bestsellerBooksArray.push(book);
+      bestsellerBooksArray.push({
+        name: anchor.attr('title'),
+        image: img.attr('src'),
+        link: anchor.attr('href')
+      });
     });
 
     // Constructing JSON response
