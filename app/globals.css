@@ -35,6 +35,11 @@
     height: 100px;
     position: relative;
   }
+  /* globals.css */
+body, html {
+  background-color: #161616;
+  color: white; /* Optional: to ensure text is visible */
+}
   #navi,
   #infoi {
     width: 100%;
@@ -77,6 +82,18 @@
     background-blend-mode: darken;
     
   
+  }
+  @keyframes fillAnimation {
+    0% {
+      border-color: #5c5c5c;
+    }
+    100% {
+      border-color: #22c55e; /* Tailwind's green-500 color */
+    }
+  }
+  
+  .hover\\:border-green-500:hover {
+    animation: fillAnimation 0.3s forwards;
   }
   .f1f {
 
@@ -196,4 +213,23 @@
   100% {
     transform: translateY(-100%);
   }
+}
+.hid-box {
+  bottom: -100%; /* Start hidden below the box */
+  position: absolute;
+  border-radius: 10%;
+  transition: all 0.3s ease-out;
+  background: #161616;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.box {
+  position: relative;
+  overflow: hidden;
+}
+
+.box:hover .hid-box {
+  bottom: 0; /* Slide up to show the box */
 }

@@ -9,12 +9,12 @@ import GridX from "@/app/ui_component/grid";
 import GridXXY from "./grid copy 2";
 import Publishers from "./publishers";
 
-export async function Homecontainer({data}) {
+export async function Homecontainer({data , print}) {
     return(
         <>
         <div  className="bg-[#161616] overflow-hidden ">
             
-          <Navbar />
+          <Navbar print={print} />
       <Carsoul data={data[0].json} />
       <TopPublishing data={data[1]} />
       {/* <div className="w-[80%] ml-auto mr-auto border border-[#474747] pb-5 pt-5">
@@ -30,7 +30,7 @@ export async function Homecontainer({data}) {
       <GridXXY kitsu={false} data={data[0].json.topUpcoming} title={"Top Upcoming Manga"} />
       <GridY kitsu={true} data={data[0].json.highestRated} title={"Top Publishing Manga"} />
       <Publishers />
-      <br /><br /><br />
+      
       <AniGrid kitsu={true} data={data[0].json.anilist} title={"Top Manga This Week"} />
       <div className="w-[85%] ml-auto mr-auto"><NewsComponent /></div>
       <Footer /></div>

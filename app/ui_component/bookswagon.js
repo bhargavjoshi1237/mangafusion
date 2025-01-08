@@ -32,7 +32,10 @@ async function fetchBookswagonData(url) {
     // Extracting book details
     const details = {};
     $product('#bookdetail li').each((i, elem) => {
-      const key = $product(elem).find('span.font-weight-bold').text().replace(':', '').trim();
+      let key = $product(elem).find('span.font-weight-bold').text().replace(':', '').trim().replace(/\s+/g, '');
+      if (key === 'ISBN-13') {
+        key = key.replace('-', '');
+      }
       const value = $product(elem).contents().not($product(elem).find('span.font-weight-bold')).text().trim();
       details[key] = value;
     });

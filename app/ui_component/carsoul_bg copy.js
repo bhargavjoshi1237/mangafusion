@@ -13,7 +13,7 @@ export default function Carsoul() {
 <Carousel plugins={[
             
             Autoplay({
-              delay: 4000,
+              delay: 5000,
             }),
           ]} className="w-full ">
       <CarouselContent>

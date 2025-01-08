@@ -12,7 +12,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head> <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      <head>
+
+      <meta name="google-site-verification" content="hSZcdIVng-_BwbdPoMeL0BbvjJehWBstgGIuWU5iFXk" />
+       <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"></link> </head>
       <body className={inter.className}>{children}
       <Toaster />

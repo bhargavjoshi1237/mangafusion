@@ -3,6 +3,7 @@ import Navbar from '@/app/ui_component/navbar';
 import { Separator } from '@/components/ui/separator';
 import NewsComponent from '@/app/ui_component/news';
 import Footer from '@/app/ui_component/footer';
+import ABookDataClient from '@/app/ui_component/BookDataClient';
 
 
 export default async function Home({ params }) {
@@ -40,14 +41,35 @@ export default async function Home({ params }) {
         }
 
        const processedItems =  uniqueItems.sort((a, b) => a.pubdate_sort.localeCompare(b.pubdate_sort));
+       let audiobookData = null;
+       if (datax.data?.type === 'Light Novel'|| datax.data?.type === 'Novel') {
+           try {
+               const response2 = await axios.get(`https://global.bookwalker.jp/louis-api/autocomplete/?category=&term=${titleEn}`);
+               const results = response2.data;
+               const audiobook = results.find(item => item.type === 1 && item.value.includes("[AUDIOBOOK]"));
+               if (audiobook) {
+               
+                   const typeId = audiobook.typeId;
+                   const audiobookResponse = await ABookDataClient(audiobook.typeId)
+                   audiobookData = audiobookResponse;
+                  
+               }
+           } catch (error) {
+               console.error("Error fetching audiobook data:", error);
+           }
+       }
+
+  
+
 
         
 
-        return { datax, processedItems, sel_publisher };
+        return { datax, processedItems, sel_publisher,uniqueItems, audiobookData };
     }
 
-    const { datax, processedItems, sel_publisher } = await fetchExternalData();
+    const { datax, processedItems, sel_publisher,uniqueItems, audiobookData } = await fetchExternalData();
     processedItems.sort((a, b) => a.pubdate_sort.localeCompare(b.pubdate_sort));
+    
     
     return (
         <>
@@ -114,6 +136,7 @@ export default async function Home({ params }) {
 <div className='bg-[#161616] h-12'></div>
 <div className='bg-[#161616] '>
 <div className="bg-[#212121] sm:visible  hidden  rounded-lg border-4 border-[#474747] w-[95%] h-fit min-h-[55px] flex flex-col sm:flex-row items-center justify-center mx-auto">
+ <div className='w-[75%] flex items-center justify-center ml-auto mr-auto'>
   <div className="h-[35px] w-[95%] sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
     <span className="material-icons fon mr-2" style={{fontSize:"30px"}}>book</span>
     <p className="fon text-sm">Status:{" "+datax.data?.status}</p>
@@ -137,7 +160,7 @@ export default async function Home({ params }) {
   <div className="h-[35px] w-[95%] sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
     <span className="material-icons fon mr-2" style={{fontSize:"30px"}}>translate</span>
     <p className="fon text-sm">English (Paperback)</p>
-  </div>
+  </div></div>
 </div>
 <div className='h-5 bg-[#161616]'></div>
 <div className=" sm:visible  hidden  rounded-lg border-4 border-[#474747] w-[95%] h-fit min-h-[55px] sm:flex flex-col sm:flex-row items-center justify-center mx-auto">
@@ -145,9 +168,9 @@ export default async function Home({ params }) {
     <span className="material-icons fon mr-2" style={{fontSize:"30px"}}>book</span>
     <p className="fon text-sm">Manga Score: {" "+datax?.data?.score}</p>
   </div>
-  <div className="h-[35px] w-full sm:w-[280px] ml-2 mr-2 flex items-center justify-center">
+  <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
     <span className="material-icons fon mr-2" style={{fontSize:"30px"}}>category</span>
-    <p className="fon text-sm w-[280px] ">From: {" "+datax?.data?.serializations[0]?.name || "N/A"}</p>
+    <p className="fon text-sm  ">From: {" "+datax?.data?.serializations[0]?.name || "N/A"}</p>
 
   </div>
   <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
@@ -160,7 +183,7 @@ export default async function Home({ params }) {
   </div>
   <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
     <span className="material-icons fon mr-2" style={{fontSize:"30px"}}>straighten</span>
-    <p className="fon text-sm">H: 208 W: 145  S:20</p>
+    <p className="fon text-sm">Total {processedItems.length} Books</p>
   </div>
   <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
     <span className="material-icons fon mr-2" style={{fontSize:"30px"}}>translate</span>
@@ -197,9 +220,35 @@ export default async function Home({ params }) {
     </div>
 </div>
 <br />
+
 <Separator className="w-[95%] ml-auto mr-auto bg-[#5c5c5c] mt-3" />
 <br />
 
+{(datax.data?.type === 'Light Novel' || datax.data?.type === 'Novel') && (
+  <>
+    <p className="fon text-3xl w-[95%] mt-5 mb-3 ml-auto mr-auto">Audiobooks</p>
+    <br />
+    {audiobookData && (
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-7 w-[95%] ml-auto mr-auto">
+        {audiobookData.map((item, index) => {
+          const url = new URL(item.link);
+          const id = url.pathname.split('/').filter(Boolean).pop();
+          return (
+            <a href={`/audiobook/${id}`} key={index}>
+              <div className="rounded-lg">
+                <img src={item.image} alt={item.title} className="w-full h-auto mb-2" />
+                <h3 className="fon text-lg">{item.title}</h3>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+    <br />
+    <Separator className="w-[95%] ml-auto mr-auto bg-[#5c5c5c] mt-3" />
+    <br />
+  </>
+)}
 {/* <Separator className="w-[95%] ml-auto mr-auto bg-[#5c5c5c] mt-3" /> */}
 <br />
 <div className='w-[95%] ml-auto mr-auto'>

@@ -1,0 +1,105 @@
+"use client"
+import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { createClient } from 'astra-db-ts';
+
+const ImageUploadPage = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [uploadStatus, setUploadStatus] = useState('');
+    const [retrievedImage, setRetrievedImage] = useState(null);
+    const [retrievalId, setRetrievalId] = useState('');
+    const [imageId, setImageId] = useState('');
+
+    // Hardcoded Astra DB credentials (Not recommended for production)
+    const astraClient = createClient({
+        astraDatabaseId: "8b0eab33-b140-4845-8398-239a368ffc12",
+        astraDatabaseRegion: "asia-south1",
+        token: "AstraCS:ftZGpituKMvlvPyGeXXSegyE:38c75deff64620aa3f0b85d61f6ee42ed7ade96e947abe8e8acc331c7ce8d6a0",
+        keyspace: "jack123"
+    });
+
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        setSelectedImage(file);
+    };
+
+    const handleImageUpload = async () => {
+        if (!selectedImage) return;
+        setUploadStatus('Uploading...');
+
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const blob = new Blob([reader.result], { type: selectedImage.type });
+             const id = uuidv4();
+             setImageId(id);
+
+            try {
+                const imageBlob = Buffer.from(Object.values(await blob.arrayBuffer()));
+                await astraClient.execute(`INSERT INTO images (id, image) VALUES (?, ?)`, [id, imageBlob]);
+                setUploadStatus('Image uploaded successfully!');
+            } catch (error) {
+               setUploadStatus(`Upload failed: ${error.message}`);
+            }
+
+        };
+         reader.readAsArrayBuffer(selectedImage);
+    };
+
+    const handleRetrieveImage = async () => {
+        if (!retrievalId) return;
+
+        try {
+            const queryResult = await astraClient.execute(`SELECT image FROM images WHERE id = ?`, [retrievalId]);
+          
+            if (!queryResult.rows.length) {
+              setRetrievedImage(null);
+                console.error('Image not found');
+                 return;
+              }
+            
+              const imageBlob = queryResult.rows[0].image;
+              const blob = new Blob([Buffer.from(imageBlob)], { type: 'image/png' }); // Adjust type
+              const imageURL = URL.createObjectURL(blob);
+              setRetrievedImage(imageURL);
+
+        } catch (error) {
+            setRetrievedImage(null);
+            console.error('Error retrieving image:', error);
+        }
+    };
+
+    return (
+        <div>
+            <h1>Image Management</h1>
+            {/* Upload */}
+            <h2>Upload an image</h2>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <button onClick={handleImageUpload} disabled={!selectedImage}>
+                Upload
+            </button>
+             <div>
+                {uploadStatus && <p>{uploadStatus}</p>}
+                 {imageId && <p>Your Image ID: {imageId}</p>}
+            </div>
+
+             {/* Retrieve */}
+             <h2>Retrieve an image</h2>
+             <input
+               type="text"
+                placeholder="Enter image ID to retrieve"
+               value={retrievalId}
+               onChange={(e) => setRetrievalId(e.target.value)}
+            />
+            <button onClick={handleRetrieveImage} disabled={!retrievalId}>Retrieve Image</button>
+             {retrievedImage && (
+             <div>
+                 <p>Retrieved Image:</p>
+                   <img src={retrievedImage} alt="Retrieved" style={{maxWidth: '300px'}} />
+             </div>
+             )}
+        </div>
+    );
+};
+
+export default ImageUploadPage;

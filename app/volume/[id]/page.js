@@ -37,9 +37,10 @@ export default async function Home({ params }) {
         <div className="mt-12 w-full">
           <div className="w-[95%] ml-auto mr-auto flex">
             <div>
+
               <img className="w-[180px] ml-auto sm:hidden visible mr-auto mb-10" src={dataxx?.cover || datax?.imgSrc} alt="Book Cover" />
               <p className="fon text-3xl">{datax?.title}</p>
-              <p className="fon text-xs mt-1 mb-1.5">{datax?.bookDetails?.Publisher}</p>
+              <p className="fon text-xs mt-1 mb-1.5">Series: {datax?.bookDetails?.SeriesTitle}</p>
               <p className="fon text-xs sm:w-[600px] w-[100%]">{(datax?.paragraphs)?.substring(0, 400)}</p>
               <div className="w-full mt-4 flex">
                 <div className="bg-[#212121] h-[120px] w-[85px] rounded-lg border-4 border-[#5c5c5c]">
@@ -83,31 +84,32 @@ export default async function Home({ params }) {
         <div>
           <p className="fon text-sm w-[95%] ml-auto mr-auto mt-4">{datax?.paragraphs}</p>
         </div>
-        <div className="sm:visible hidden mt-5 rounded-lg border-4 border-[#474747] w-[95%] h-fit min-h-[55px] sm:flex flex-col sm:flex-row items-center justify-center mx-auto">
-          <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
+        <div className=" sm:visible hidden mt-5 rounded-lg border-4 border-[#474747] w-[95%] h-fit min-h-[55px] sm:flex flex-col sm:flex-row items-center justify-between mx-auto">
+          <div className="w-[75%] flex items-center justify-center ml-auto mr-auto">
+          <div className="h-[35px] w-full min-w-fit ml-2 mr-2 flex items-center justify-center">
             <span className="material-icons fon mr-2" style={{ fontSize: "30px" }}>book</span>
-            <p className="fon text-sm">ISBN: 9781638581826</p>
+            <p className="fon text-sm">ISBN: {datax.bookDetails.ISBN13}</p>
           </div>
-          <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
+          <div className="h-[35px] min-w-fit  ml-2 mr-2 flex items-center justify-center">
             <span className="material-icons fon mr-2" style={{ fontSize: "30px" }}>category</span>
-            <p className="fon text-sm">Publisher: Square Enix</p>
+            <p className="fon text-sm">Publisher:  {datax.bookDetails.Publisher}</p>
           </div>
-          <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
+          <div className="h-[35px] w-full min-w-fit ml-2 mr-2 flex items-center justify-center">
             <span className="material-icons fon mr-2" style={{ fontSize: "30px" }}>scale</span>
-            <p className="fon text-sm">Weight: 228 Gm</p>
+            <p className="fon text-sm">Weight:  {datax.bookDetails.Weight}</p>
           </div>
-          <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
+          <div className="h-[35px] w-full min-w-fit ml-2 mr-2 flex items-center justify-center">
             <span className="material-icons fon mr-2" style={{ fontSize: "30px" }}>event</span>
-            <p className="fon text-sm">Release: 14 Apr 2020</p>
+            <p className="fon text-sm">Release:  {datax.bookDetails.PublisherDate}</p>
           </div>
-          <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
+          <div className="h-[35px] w-full min-w-fit ml-2 mr-2 flex items-center justify-center">
             <span className="material-icons fon mr-2" style={{ fontSize: "30px" }}>straighten</span>
-            <p className="fon text-sm">H: 208 W: 145 S:20</p>
+            <p className="fon text-sm">H: {(datax.bookDetails.Height).replace("mm","")} W: {(datax.bookDetails.Width).replace("mm","")} SW:{(datax.bookDetails.SpineWidth).replace("mm","")}</p>
           </div>
-          <div className="h-[35px] w-full sm:w-[200px] ml-2 mr-2 flex items-center justify-center">
+          <div className="h-[35px] w-full min-w-fit ml-2 mr-2 flex items-center justify-center">
             <span className="material-icons fon mr-2" style={{ fontSize: "30px" }}>translate</span>
-            <p className="fon text-sm">English (Paperback)</p>
-          </div>
+            <p className="fon text-sm">English ({datax.bookDetails.Binding})</p>
+          </div></div>
         </div>
         <br />
         <Separator className="w-[95%] ml-auto mr-auto bg-[#5c5c5c] mt-3" />
@@ -136,7 +138,7 @@ export default async function Home({ params }) {
           <div className="h-[80px] rounded-lg border-4 border-[#5c5c5c] w-full">
             <div className="h-[80px] w-[90%] ml-auto mr-auto justify-center items-center flex">
               <img className="h-[35px] w-[200px] mr-auto -mt-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfAPm8BNZyHeEov4V13nP1n-zuCzvzvcLFkw&s" alt="" />
-              <p className="fon text-4xl -mt-2">{bookData?.price || "N/A"}</p>
+              <p className="fon text-4xl -mt-2">{bookData?.price?.replace("US", "") || "N/A"}</p>
             </div>
           </div>
         </div>

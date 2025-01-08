@@ -65,11 +65,41 @@ module.exports = {
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
+        }, fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        fadeOut: {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        zoomIn: {
+          '0%': { transform: 'scale(0.95)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        zoomOut: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(0.95)' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateY(10px)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        slideOut: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(10px)' },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'fade-in-fast': 'fadeIn 0.1s ease-in',
+        'fade-out-fast': 'fadeOut 0.1s ease-out',
+        'zoom-in-fast': 'zoomIn 0.1s ease-in',
+        'zoom-out-fast': 'zoomOut 0.1s ease-out',
+        'slide-in-fast': 'slideIn 0.1s ease-in',
+        'slide-out-fast': 'slideOut 0.1s ease-out',
+     
       },
     },
   },
