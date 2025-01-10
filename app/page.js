@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { createClient } from "./supabase";
 import { Homecontainer } from "./ui_component/homecontainer";
 

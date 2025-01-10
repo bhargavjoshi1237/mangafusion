@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -90,7 +89,7 @@ export default function CarouselComponent({data}) {
     <p className="fon text-white text-lg mt-1 mb-1 h-[40px]" align="right">Members: {entry.main.attributes.favoritesCount}</p>
     <p className="fon text-white text-lg mt-1 mb-1 h-[40px]" align="right">Type: {entry.main.type}</p>
     <p className="fon text-white text-lg mt-1 mb-1 h-[40px]" align="right">Genre: Drama</p>
-    {/* <p className="fon text-white text-lg mt-1 mb-1 h-[40px]" align="right">Genre: {entry.main.attributes.genres.join(', ')}</p> */}
+    {/* <p className="fon text-white text-lg mt-1 mb-1 h-[40px]" align="right">Genre: {entry.main.attributes.genres.join(', ')} </p> */}
   </div>
 </div>
 
