@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import fetchAndFindAudioBookByVolume from "@/app/ui_component/bookwalkeraudiobook";
 import AudioPlayer from "./audioplayer";
 
+export const runtime = 'edge';
 
 export const metadata = {
   title: "Manga Fusion",

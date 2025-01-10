@@ -1,6 +1,7 @@
 import { createClient } from "../supabase";
 import { Homecontainers } from "../ui_component/homecontainers";
 
+export const runtime = 'edge';
 
 export default async function Home() {
   async function fetchExternalData() {

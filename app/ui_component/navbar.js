@@ -8,8 +8,9 @@ import UserDropdown from './user_dropdown';
 import { Switch } from "@/components/ui/switch"
 import { Scale } from 'lucide-react';
 
-export default function Navbar({print}) {
+export default function Navbar({print, res}) {
   const [user, setUser] = useState(null);
+  console.log(res)
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(print);
   useEffect(() => {

@@ -12,6 +12,8 @@ export const metadata = {
   title: "Manga Fusion",
 };
 
+export const runtime = 'edge';
+
 export default async function Home({ params }) {
   async function fetchExternalData() {
     const [datax, dataxx, bookData] = await Promise.all([

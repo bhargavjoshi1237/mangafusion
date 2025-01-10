@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import axios from 'axios';
 import Navbar from '@/app/ui_component/navbar';
 import { Separator } from '@/components/ui/separator';

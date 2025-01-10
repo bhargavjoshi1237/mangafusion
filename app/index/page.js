@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -9,6 +10,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+
+export const runtime = 'edge';
 
 export default function CarouselComponent({data}) {
   const [trendingData, setTrendingData] = React.useState([]);
