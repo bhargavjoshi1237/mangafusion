@@ -5,8 +5,8 @@ export async function GET() {
       {
         headers: {
           'accept': 'application/json',
-          'X-Cassandra-Token': 'AstraCS:cRxDUhfxzPmZJqRalWCjASxh:ff40c8ef1fdfe2691b03e69e0674a4f576d118d96b2961e81bef61b8cb43732f',
-          // 'Cache-Control': 'no-cache'
+          'X-Cassandra-Token': 
+          'ID HEAR'
         },
         cache: 'no-store'
       }
