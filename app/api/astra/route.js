@@ -68,9 +68,8 @@ export async function POST(request) {
           method: 'GET',
           headers: {
             'accept': 'application/json',
-           'X-Cassandra-Token': 
-          'ID HEAR'
-        }
+            'X-Cassandra-Token': 'AstraCS:cRxDUhfxzPmZJqRalWCjASxh:ff40c8ef1fdfe2691b03e69e0674a4f576d118d96b2961e81bef61b8cb43732f',
+          }
         }
       )
   
